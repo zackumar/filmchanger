@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "exif-js": "^2.3.0"
+    "canvas": "^2.10.1",
+    "piexifjs": "^1.0.6",
+    "yargs": "^17.6.0"
   }
 }
