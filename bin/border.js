@@ -11,7 +11,6 @@ function addBorder(inputDir, outputDir = 'border', marginPercentage = 0.05) {
     fs.mkdirSync(path.join(inputDir, outputDir));
 
   files.forEach((file) => {
-    console.log(file);
     const image = fs.readFileSync(path.join(inputDir, file)).toString('binary');
     const exif = piexif.load(image);
 
