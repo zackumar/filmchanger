@@ -3,7 +3,7 @@ const path = require('path');
 const piexif = require('piexifjs');
 const { Canvas, Image } = require('skia-canvas');
 
-function addBorder(inputDir, outputDir = 'border', marginPercentage = 0.05) {
+function addBorder(inputDir, outputDir = 'border', marginPercentage = 0.025) {
   const regex = new RegExp('.*.(jpg|JPG)', 'g');
   const files = fs.readdirSync(inputDir).filter((file) => file.match(regex));
 
@@ -14,11 +14,16 @@ function addBorder(inputDir, outputDir = 'border', marginPercentage = 0.05) {
     const image = fs.readFileSync(path.join(inputDir, file)).toString('binary');
     const exif = piexif.load(image);
 
-    const imgWidth = exif['0th'][piexif.ImageIFD.ImageWidth] ?? 2048;
-    const imgHeight = exif['0th'][piexif.ImageIFD.ImageLength] ?? 3089;
+    const imgWidth =
+      exif['0th'][piexif.ImageIFD.ImageWidth] ??
+      exif['Exif'][piexif.ExifIFD.PixelXDimension];
+    const imgHeight =
+      exif['0th'][piexif.ImageIFD.ImageLength] ??
+      exif['Exif'][piexif.ExifIFD.PixelYDimension];
 
     const width =
-      Math.max(imgWidth, imgHeight) * 0.05 * 2 + Math.max(imgWidth, imgHeight);
+      Math.max(imgWidth, imgHeight) * marginPercentage * 2 +
+      Math.max(imgWidth, imgHeight);
 
     const canvas = new Canvas(width, width);
     const ctx = canvas.getContext('2d');

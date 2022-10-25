@@ -9,15 +9,17 @@ yargs(hideBin(process.argv))
   .scriptName('film')
   .usage('$0 <cmd> [args]')
   .command(
-    'timestamp [inputDir] [outputDir]',
+    'timestamp [-i inputDir] [-o outputDir]',
     'Add timestamps to images',
     (yargs) => {
-      yargs.positional('inputDir', {
+      yargs.option('i', {
+        alias: 'inputDir',
         type: 'string',
         default: './',
         describe: 'input directory',
       });
-      yargs.positional('outputDir', {
+      yargs.option('o', {
+        alias: 'outputDir',
         type: 'string',
         default: 'timestamped',
         describe: 'output directory',
@@ -29,27 +31,31 @@ yargs(hideBin(process.argv))
     }
   )
   .command(
-    'border [inputDir] [outputDir] [marginPercentage]',
+    'border [-i inputDir] [-o outputDir] [-m margin]',
     'Add border to images',
     (yargs) => {
-      yargs.positional('inputDir', {
+      yargs.option('i', {
+        alias: 'inputDir',
         type: 'string',
         default: './',
         describe: 'input directory',
       });
-      yargs.positional('outputDir', {
+      yargs.option('o', {
+        alias: 'outputDir',
         type: 'string',
         default: 'bordered',
         describe: 'output directory',
       });
-      yargs.positional('marginPercentage', {
+      yargs.option('m', {
+        alias: 'margin',
+        demandOption: false,
+        default: 0.025,
+        describe: 'Margin Percentage',
         type: 'number',
-        default: 0.05,
-        describe: 'margin percentage',
       });
     },
     function (argv) {
-      addBorder(argv.inputDir, argv.outputDir, argv.marginPercentage);
+      addBorder(argv.inputDir, argv.outputDir, argv.margin);
       console.log('Done! 🎉');
     }
   )
