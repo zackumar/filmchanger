@@ -32,7 +32,8 @@ function addTimestamp(inputDir, outputDir = 'output', origDate) {
     .filter((file) => file.match(regex))
     .reverse();
 
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+  if (!fs.existsSync(path.join(inputDir, outputDir)))
+    fs.mkdirSync(path.join(inputDir, outputDir));
 
   files.forEach((file) => {
     const img = fs.readFileSync(path.join(inputDir, file)).toString('binary');
@@ -56,7 +57,7 @@ function addTimestamp(inputDir, outputDir = 'output', origDate) {
     const newExifBytes = piexif.dump(newExif);
     const newImg = piexif.insert(newExifBytes, img);
 
-    fs.writeFileSync(path.join(outputDir, file), newImg, 'binary');
+    fs.writeFileSync(path.join(inputDir, outputDir, file), newImg, 'binary');
 
     date.setSeconds(date.getSeconds() - 1);
   });
